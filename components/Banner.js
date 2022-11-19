@@ -1,5 +1,6 @@
 import Image from 'next/image'
-import React from 'react'
+import { motion } from "framer-motion"
+
 
 
 const Banner = () => {
@@ -9,7 +10,7 @@ const Banner = () => {
 
         <div className='absolute top-72 right-0 left-0 mr-auto ml-auto width-[100px]
          text-white w-40 h-40 border rounded-full shadow-xl shadow-gray-200 hover:shadow-lg
-         active:scale-90 transition duration-150 '>
+         active:scale-90 transition duration-150 animate-pulse'>
             <button className=''>
                 <Image className='rounded-full' src="/centerLogo.jpg" layout='fill' />
             </button>

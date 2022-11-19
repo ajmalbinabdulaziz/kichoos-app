@@ -8,11 +8,11 @@ import Image from "next/image";
 
 
 
-const blog = ({ posts }) => {
+const downloads = ({ posts }) => {
   return (
     <>
       <Head>
-        <title>Ajmal Codes | Blog</title>
+        <title>Ajmal Codes | Downloads</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
@@ -56,7 +56,7 @@ const blog = ({ posts }) => {
   )
 }
 
-export default blog
+export default downloads
 
 
 export const getStaticProps = async () => {
