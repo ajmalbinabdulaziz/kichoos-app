@@ -8,12 +8,10 @@ import { motion } from "framer-motion"
 
 
 
-
-
 export default function Home({ posts, categories }) {
-    console.log(categories, posts)
+
   return (
-    <div className='max-w-full mx-auto'>
+    <div className='max-w-full mx-auto font-exo'>
       <Head>
         <title>Azhar Blog</title>
         <link rel="icon" href="/favicon.ico" />
@@ -44,7 +42,7 @@ export default function Home({ posts, categories }) {
               <h1 className='text-3xl font-semibold'>My recent posts!</h1>
           </div>
           <div className='grid grid-cols-1 m-12 md:m-24 lg:m-28 sm:grid-cols-2 lg:grid-cols-3 gap-3
-          md:gap-6 p-10 md:p-4 border rounded-md'>
+          md:gap-6 p-10 md:p-4 border rounded-md font-roboto'>
           {posts.map((post, index) => (
             <a key={post._id} href={`/posts/${post.slug.current}`} target="_blank" >
               <div className='border cursor-pointer overflow-hidden lg:m-12 hover:scale-150 transition duration-150'>

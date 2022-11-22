@@ -16,10 +16,10 @@ const blog = ({ posts }) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <h1 className='text-4xl p-8 mx-8 mt-24 font-bold text-center'>All Blog Posts</h1>
+      <h1 className='text-4xl p-8 mx-8 mt-24 font-bold font-exo text-center'>All Blog Posts</h1>
 
       <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3
-      md:gap-6 p-5 md:px-1 max-w-6xl mx-auto mb-7'>
+      md:gap-6 p-5 md:px-1 max-w-6xl mx-auto mb-7 font-roboto'>
         {posts.map((post) => (
           <Link key={post._id} href={`/posts/${post.slug.current}`} target="_blank">
             <a>

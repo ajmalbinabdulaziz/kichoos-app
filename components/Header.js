@@ -13,7 +13,7 @@ function Header() {
     const { data: session } = useSession()
 
   return (
-    <header className="flex justify-between p-5 lg:px-12 max-w-full mx-auto">
+    <header className="flex justify-between p-5 lg:px-12 max-w-full mx-auto font-exo">
         <div className="flex space-x-5">
             <Link href="/">
                 <img className="w-14 h-14 rounded-md object-contain cursor-pointer active:animate-ping" 

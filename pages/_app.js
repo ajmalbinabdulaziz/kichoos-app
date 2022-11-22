@@ -5,10 +5,12 @@ import Footer from '../components/Footer'
 
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }) {
+
+
   return(
     <SessionProvider session={session}>
 
-     <div className='min-h-screen'>
+     <main className="min-h-screen" >
 
           <Header />
 
@@ -18,7 +20,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
             <Footer />
           </div>
 
-        </div>
+        </main>
 
     </SessionProvider>    
   )

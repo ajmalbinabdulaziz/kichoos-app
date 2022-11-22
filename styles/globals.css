@@ -1,3 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Exo+2&display=swap" rel="styleshehttps://fonts.googleapis.com/css2?family=Exo+2&display=swap" rel="stylesheetet');
+@import url('https://fonts.googleapis.com/css2?family=Exo+2&family=Roboto+Slab&display=swap" rel="stylesheet');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+.font-exo {
+    font-family: 'Exo 2', sans-serif;
+  }
+
+.font-roboto {
+    font-family: 'Roboto Slab', serif;
+}  
