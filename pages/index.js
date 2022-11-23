@@ -12,6 +12,7 @@ export default function Home({ posts, categories }) {
 
   return (
     <div className='max-w-full mx-auto font-exo'>
+      
       <Head>
         <title>Azhar Blog</title>
         <link rel="icon" href="/favicon.ico" />
