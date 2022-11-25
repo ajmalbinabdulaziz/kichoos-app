@@ -1,37 +1,36 @@
+import Image from 'next/image'
 import React from 'react'
-import Image from 'next/image';
-import ImageSlider, { Slide } from "react-auto-image-slider";
-
-
+import useEmblaCarousel from 'embla-carousel-react'
+import Autoplay from 'embla-carousel-autoplay'
+import Link from 'next/link'
 
 
 const GalleryBox = () => {
+    const [emblaRef] = useEmblaCarousel({ loop: false }, [Autoplay()])
+
   return (
-    <div className='border rounded-md w-80 h-56 overflow-hidden '>
+    
+    <div>
 
-        <ImageSlider effectDelay={500} autoPlayDelay={2000}>
-
-          <Slide>
-            <div className='relative m-3 w-72 h-48 '>
-              <Image src="/library.jpg" layout='fill' />
+        <h1 className='font-bold font-exo text-lg'>Gallery</h1>
+        <div className='embla cursor-pointer border rounded-md w-80 h-48 overflow-hidden' ref={emblaRef}>
+        <Link href="/gallery">        
+        <div className="embla__container">
+            <div className="embla__slide relative w-72 h-48">
+                <Image src="/library.jpg" layout='fill' />
             </div>
-          </Slide>
-
-          <Slide>
-            <div className='relative m-3 w-72 h-48 '>
-              <Image src="/football.jpg" layout='fill' />
+            <div className="embla__slide relative w-72 h-48">
+                <Image src="/casual.jpg" layout='fill' />
             </div>
-          </Slide>
-
-          <Slide>
-            <div className='relative m-3 w-72 h-48 '>
-              <Image src="/casual.jpg" layout='fill' />
+            <div className="embla__slide relative w-72 h-48">
+                <Image src="/football.jpg" layout='fill' />
             </div>
-          </Slide>
+        </div>
+        </Link>    
+        </div>  
 
-        </ImageSlider>
+    </div>
 
-  </div>
   )
 }
 

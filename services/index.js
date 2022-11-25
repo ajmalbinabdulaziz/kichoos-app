@@ -118,3 +118,15 @@ export const getStaticSide = async ()=> {
 }
 
 
+
+export const getGalleryImages = async ()=>{
+  const query = `*[_type == "gallery"]{
+    name,
+    image,
+  }`
+ 
+  const images = await sanityClient.fetch(query)
+  return images
+}
+
+
