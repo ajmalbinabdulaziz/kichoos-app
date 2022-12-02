@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import Contact from '../components/Contact'
-import GalleryBox from '../components/GalleryBox'
+import GalleryBox from '../components/Gallery/GalleryBox'
 
 
 const about = () => {
