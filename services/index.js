@@ -50,9 +50,6 @@ export const getPostDetails = async (slug) => {
     _id,
     _createdAt,
     title,
-    categories[0]->{
-      title,
-    },
     description,
     author -> {
         name,
@@ -60,14 +57,11 @@ export const getPostDetails = async (slug) => {
     },
     'comments': *[
       _type == "comment" &&
-      post._ref == ^._id],
-    'likes': *[
-      _type == "like" &&
-      post._ref == ^._id],
+      post._ref == ^._id && 
+      approved == true],
     mainImage,
     slug,
-    body, 
-    vote,
+    body
   }`;
 
 

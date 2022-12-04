@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import Contact from '../components/Contact'
-import GalleryBox from '../components/Gallery/GalleryBox'
+import GalleryBox from '../components/GalleryBox'
 
 
 const about = () => {
@@ -30,7 +30,7 @@ const about = () => {
               </div>
           </section>
 
-          <section className='px-5 lg:p-10 mb-20 border-l-2 border-gray-100 '>
+          <section className='px-5 lg:p-10 mb-20'>
               <GalleryBox />
               <Contact />
           </section>

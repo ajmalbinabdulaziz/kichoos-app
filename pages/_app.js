@@ -1,28 +1,37 @@
 import '../styles/globals.css'
 import { SessionProvider,  } from "next-auth/react"
 import Header from '../components/Header'
+import { QueryClientProvider, QueryClient } from 'react-query'
 import Footer from '../components/Footer'
 
 
-function MyApp({ Component, pageProps: { session, ...pageProps } }) {
+const queryClient = new QueryClient()
+
+
+function MyApp({ Component, pageProps: { session, ...pageProps }, }) {
 
 
   return(
-    <SessionProvider session={session}>
+    <QueryClientProvider client={queryClient}>
 
-     <main className="min-h-screen" >
+      <SessionProvider session={session}>
 
-          <Header />
+      <main className="min-h-screen" >
 
-          <Component {...pageProps} />
+            <Header />
 
-          <div className="sticky top-[100vh]">
-            <Footer />
-          </div>
+            <Component {...pageProps} />
 
-        </main>
+            <div className="sticky top-[100vh]">
+              <Footer />
+            </div>
 
-    </SessionProvider>    
+          </main>
+
+      </SessionProvider>
+
+    </QueryClientProvider >
+
   )
   
 }

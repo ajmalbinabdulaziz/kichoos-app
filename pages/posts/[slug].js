@@ -1,27 +1,66 @@
 import { sanityClient, urlFor } from "../../sanity";
-import { GetStaticProps } from "next";
 import PortableText from "react-portable-text";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { useState } from "react";
 import Head from "next/head";
+import { useRouter } from "next/router";
+import { useSession, signIn, signOut } from "next-auth/react"
+import Contact from '../../components/Contact'
+import GalleryBox from '../../components/GalleryBox'
+import { useQuery } from "react-query";
+import { getPostDetails } from "../../services";
 
 
 
-function PostPage({ post }) {
+function PostPage() {
 
-  console.log(post)
   const { register, handleSubmit, formState: { errors } } = useForm();
-  const [ submitted, setSubmitted ] = useState(false)
+  const [ submitted, setSubmitted ] = useState(false)    
+  const [state, setState] = useState()
+  const router = useRouter()
+  const { slug } = router.query
+  const { data: session } = useSession()
+  const [ buttonClicked, setButtonClicked ] = useState(false)
 
+  const {isLoading, isError, error, isFetched, refetch} =useQuery(['states', slug], ()=>{
+    return getPostDetails(slug).then(res => setState(res))
+  })
+
+  console.log(state)
   const onSubmit = async(data) => {
+    setButtonClicked(true)
     await fetch('/api/createComment', {
       method: 'POST',
-      body: JSON.stringify(data),
+      body: JSON.stringify({...data,
+        _id: state?._id,
+        name: session?.user?.name,
+        email: session?.user?.email,
+        image: session?.user?.image,
+      }
+      ),
     }).then(()=> {
+      console.log(data);
       setSubmitted(true);
+      refetch()
+      reset()
+      setButtonClicked(false)
     }).catch((err) => {
       console.log(err);
       setSubmitted(false);
+    })
+  } 
+
+  const onDelete = async(data) => {
+    setButtonClicked(true)
+
+    await fetch('/api/createComment', {
+      method: 'DELETE',
+      body: data._id,
+    }).then(()=> {
+      refetch()
+      setButtonClicked(false)
+    }).catch((err) => {
+      console.log(err);
     })
   } 
 
@@ -31,109 +70,149 @@ function PostPage({ post }) {
         <title>Azhar | Blog</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <img
-        className="w-full h-60 object-cover px-auto"
-        src={urlFor(post.mainImage)}
-        alt="Cover Image"
-      />
 
-      <article className="max-w-3xl mx-auto p-5">
-        <h1 className="text-3xl mt-10 mb-3">{post.title}</h1>
-        <h2 className="text-xl font-light text-gray-500 mb-2">
-          {post.description}
-        </h2>
-
-        <div className="flex items-center space-x-2">
-          <img className="w-10 h-10 rounded-full" src={urlFor(post.author.image)} alt="" />
-
-          <p className="font-extralight text-sm">
-              Blog post by <span className="text-green-600">{post.author.name}</span> - Published at {" "}
-              {new Date(post._createdAt).toLocaleString()}
-          </p>
-        </div>
-
-        <div className="mt-10">
-            <PortableText
-                className=""
-                dataset={process.env.NEXT_PUBLIC_SANITY_DATASET}
-                projectId={process.env.NEXT_PUBLIC_SANITY_PROJECT_ID}
-                content={post.body}
-                serializers={{
+      {isLoading ? (
+                <div className='mt-20 font-bold text-center text-2xl'>
+                    Loading..
+                </div>
+            ) :
+            isError ?
+            (
+                <div className="mt-20 font-bold text-2xl text-center">
+                    {error.message}                   
+                </div>
+            ):
+            (    
+            <div className='bg-gray-50 grid grid-cols-1 lg:grid-cols-3 px-10 py-4'>
+    
+             <article className='flex flex-col col-span-2 lg:pl-4 pr-0 mt-8'>
+    
+                <h1 className='font-bold text-5xl text-stone-800 py-7' >{state?.title}</h1>
+    
+                <div className='py-2 flex items-center space-x-2'>
+                <img className='w-10 h-10 rounded-full' src={urlFor(state?.author.image).url()} alt="author image" />
+                <p>
+                    Blog state by <span className='font-bold'>{state?.author.name}</span>  - Published at {" "}
+                    {new Date(state?._createdAt).toLocaleString()}
+                </p>
+                </div>
+    
+                <hr className=" border-purple-500 mx-12" />
+    
+                <div className="py-3 mt-8 mb-5">
+                <PortableText
+                    className=""
+                    dataset={process.env.NEXT_PUBLIC_SANITY_DATASET}
+                    projectId={process.env.NEXT_PUBLIC_SANITY_PROJECT_ID}
+                    content={state?.body}
+                    serializers={{
                     h1: (props) => <h1 className="text-2xl font-bold my-5" {...props} />,
                     h2: (props) => <h1 className="text-xl font-bold my-5" {...props} />,
-                    li: ({ children }) => <li className="ml-4 list-disc">{children}</li>,
-                    link: ({ href, children }) => ( 
-                      <a href={href} className="text-blue-500 hover:underline">
+                    li: ({ children }) => <li className="ml-4 list-disc p-1">{children}</li>,
+                    link: ({ href, children }) => (
+                        <a href={href} className="text-blue-500 hover:underline">
                         {children}
-                      </a>
+                        </a>
                     ),
-                }}
-            />
-        </div>
-      </article>
-
-      <hr className="max-w-lg my-5 mx-auto border border-yellow-500"/>
-
-      {submitted ? (        
-        <div className="flex flex-col bg-yellow-500 text-white p-10 my-10 max-w-2xl mx-auto" >
-          <h3 className="text-3xl font-bold">Thank you for submitting your comment!</h3>
-          <p className="py-2">Once it has been approved, it will appear below!</p>
-        </div> 
-      ) : (
-          <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col p-5 max-w-2xl mx-auto mb-10">
-          <h3 className="text-sm text-yellow-500">Enjoyed this article?</h3>
-          <h4 className="text-3xl font-bold ">Leave a comment below</h4>
-          <hr className="py-3 mt-2" />
-  
-          <input 
-            {...register("_id")}
-            type="hidden" 
-            name="_id"
-            value={post._id}      
-          />
-  
-          <label className="block mb-5">
-              <span className="text-gray-700">Name</span>
-              <input {...register("name", { required: true })} className="shadow border rounded py-2 form-input mt-1 block w-full ring-yellow-500 outline-none focus:ring" placeholder="John Appleseed" type="text" />
-          </label>
-          <label className="block mb-5">
-              <span className="text-gray-700">Email</span>
-              <input {...register("email", { required: true })} className="shadow border rounded py-2 form-input mt-1 block w-full ring-yellow-500 outline-none focus:ring" placeholder="John Appleseed" type="email" />
-          </label>
-          <label className="block mb-5">
-              <span className="text-gray-700">Comment</span>
-              <textarea 
-                {...register("comment", { required: true })}
-                className=" shadow border rounded block mt-1 py-2 w-full ring-yellow-500 outline-none focus:ring form-textarea"
-                placeholder="John Appleseed"
-                 rows={8}
-              />
-          </label>
-  
-          <div className="flex flex-col">
-            {errors.name && <span className="text-red-500">The Name Field is Required</span>} 
-            {errors.email && <span className="text-red-500">The Email Field is Required</span>}
-            {errors.comment && <span className="text-red-500">The Comment Field is Required</span>}    
-          </div>
+                    }}
+                />
+                </div>
+    
+                <hr className='max-w-full my-5 mx-10 border border-purple-500 border-t-0'/> 
+        
+                <div className='mt-1'>
+    
+                <div className=' rounded-b-md py-5'>
+    
+                    {state?.comments.map((comment)=>(
+                    <div 
+                    className='relative flex items-center space-x-2 space-y-5 pr-12'
+                    key={comment.id}
+                    >
+                        {comment.image ? (
+                        <div className='z-50 py-2 pt-5 pl-2'>
+                            <Image src={comment.image} width={50} height={50} className="rounded-full" /> 
+                        </div>
+                        )
+                        : (
+                        <div className='z-50 py-2 pl-4'>
+                            <Avatar seed={comment.name} />
+                        </div>
+                        )}
             
-            <input type="submit" 
-            className="bg-yellow-500 h-10 w-full hover:bg-yellow-400 cursor-pointer border rounded text-white font-bold" />
-        </form>
-        )}
+                        <div className="flex">
+                            <div className='flex flex-col border border-gray-100 rounded-lg w-full bg-gray-100'>
+                                <p className='py-2 text-gray-400 text-xs'>
+                                    <span className='font-semibold text-gray-600 text-sm'>
+                                    {comment.name}
+                                    </span>
+                                    . <Timeago className="px-2" date={comment._createdAt}  />
+                                </p>
+            
+                                <p className="p-2">{comment.comment}</p>
+                            </div>
 
-        {/* Comment Section */}
-        <div className="flex flex-col p-10 my-10 mx-auto max-w-2xl shadow-yellow-500 shadow space-y-2">
-          <h3 className="text-4xl my-2">Comments</h3>
-          <hr className="pb-4"/>
-          {post.comments.map((comment) => (
-            <div>
-              <p className="pb-2">
-                <span className="text-yellow-500">{comment.name}: </span>
-                {comment.comment}
-              </p>
-            </div>
-          ))}
-        </div>
+                            <div
+                                onClick={()=>onDelete(comment)} 
+                                className="flex flex-col justify-center p-2 cursor-pointer 
+                                    text-gray-200 hover:text-gray-700">
+                                {(session?.user.name === comment.name) ? 
+                                    (
+                                        <AdjustmentsHorizontalIcon height={20} width={20} />                                   
+                                        
+                                    ) : ""
+                                }                               
+                            </div>                            
+                        </div>                            
+                </div>
+                ))}    
+    
+                </div>
+                    {!session ? (
+                        <div className="w-full">
+                            <button
+                            onClick={()=>signIn()}
+                            type='submit'
+                            className='rounded-full bg-red-500 p-4 w-full text-white font-semibold
+                            disabled:bg-gray-200'>
+                                Sign In
+                            </button>
+                        </div>
+    
+                    ) : (          
+                    <form 
+                        onSubmit={handleSubmit(onSubmit)}
+                        className='flex flex-col space-y-2'
+                    >
+                        <textarea 
+                        {...register('comment')}
+                        className='h-24 rounded-lg border border-gray-200 p-2 pl-4 outline-none
+                        disabled:bg-gray-100'
+                        placeholder={
+                            session ? 'Write your comments' : 'Please sign in to comment'
+                        }
+                        />
+            
+                        <button
+                        disabled={buttonClicked}
+                        type='submit'
+                        className='rounded-full bg-red-500 p-3 text-white font-semibold
+                        disabled:bg-gray-200'>
+                            Comment
+                        </button>                 
+                    </form>
+                    )}                         
+                </div>
+    
+             </article>
+    
+             <section className='p-5 mt-20 lg:ml-12 lg:p-10 mb-20'>
+                <GalleryBox />
+                <Contact />
+             </section>
+           </div>
+
+        )}
   
     </main>
   );
@@ -141,59 +220,3 @@ function PostPage({ post }) {
 
 export default PostPage;
 
-export const getStaticPaths = async () => {
-  const query = `*[_type=="post"]{
-        _id,
-        slug {
-            current
-        }
-      }
-    `;
-  const posts = await sanityClient.fetch(query);
-
-  const paths = posts.map((post) => ({
-    params: {
-      slug: post.slug.current,
-    },
-  }));
-
-  return {
-    paths,
-    fallback: "blocking",
-  };
-};
-
-export const getStaticProps = async ({ params }) => {
-  const query = `*[_type=="post" && slug.current==$slug][0]{
-        _id,
-        _createdAt,
-        title,
-        description,
-        author -> {
-            name,
-            image,
-        },
-        'comments': *[
-          _type == "comment" &&
-          post._ref == ^._id && 
-          approved == true],
-        mainImage,
-        slug,
-        body
-      }`;
-
-  const post = await sanityClient.fetch(query, {
-    slug: params?.slug,
-  });
-
-  if (!post) {
-    return {
-      notFound: true,
-    };
-  }
-
-  return {
-    props: { post },
-    revalidate: 60,
-  };
-};
