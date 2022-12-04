@@ -11,7 +11,7 @@ const config = {
 
 const client = sanityClient(config);
 
-export default async function createComment() {
+export default async function createComment(req, res) {
     switch (req.method){
         case "POST":
             const { _id, name, email, image, comment } = JSON.parse(req.body)

@@ -11,7 +11,7 @@ import { getGalleryImages, x } from '../services/index'
 
 const gallery = ({ images }) => {
 
-  const [open, setOpen] = useState(true)
+  const [open, setOpen] = useState(false)
   const [slider, setSlider] = useState(0)
 
   const handleOpen = (slider) =>{

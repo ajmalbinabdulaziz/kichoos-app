@@ -57,8 +57,7 @@ export const getPostDetails = async (slug) => {
     },
     'comments': *[
       _type == "comment" &&
-      post._ref == ^._id && 
-      approved == true],
+      post._ref == ^._id],
     mainImage,
     slug,
     body

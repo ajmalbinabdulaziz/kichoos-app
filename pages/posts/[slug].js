@@ -1,4 +1,4 @@
-import { sanityClient, urlFor } from "../../sanity";
+import { urlFor } from "../../sanity";
 import PortableText from "react-portable-text";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
@@ -9,7 +9,10 @@ import Contact from '../../components/Contact'
 import GalleryBox from '../../components/GalleryBox'
 import { useQuery } from "react-query";
 import { getPostDetails } from "../../services";
-
+import Timeago from 'react-timeago';
+import Avatar from '../../components/Avatar'
+import { ChatBubbleLeftIcon, HandThumbUpIcon, ShareIcon,TrashIcon, AdjustmentsHorizontalIcon } from '@heroicons/react/24/outline'
+import Image from "next/image";
 
 
 function PostPage() {
@@ -21,12 +24,22 @@ function PostPage() {
   const { slug } = router.query
   const { data: session } = useSession()
   const [ buttonClicked, setButtonClicked ] = useState(false)
+  const [inputValue, setInputValue] = useState("");
 
   const {isLoading, isError, error, isFetched, refetch} =useQuery(['states', slug], ()=>{
     return getPostDetails(slug).then(res => setState(res))
   })
 
-  console.log(state)
+  const handleUserInput = (e) => {
+    setInputValue(e.target.value);
+  };
+
+  const resetInputField = () => {
+    setInputValue("");
+  };
+
+  console.log(inputValue)
+
   const onSubmit = async(data) => {
     setButtonClicked(true)
     await fetch('/api/createComment', {
@@ -40,10 +53,10 @@ function PostPage() {
       ),
     }).then(()=> {
       console.log(data);
+      setButtonClicked(false)
       setSubmitted(true);
       refetch()
-      reset()
-      setButtonClicked(false)
+      reset()      
     }).catch((err) => {
       console.log(err);
       setSubmitted(false);
@@ -127,7 +140,7 @@ function PostPage() {
                     {state?.comments.map((comment)=>(
                     <div 
                     className='relative flex items-center space-x-2 space-y-5 pr-12'
-                    key={comment.id}
+                    key={comment._id}
                     >
                         {comment.image ? (
                         <div className='z-50 py-2 pt-5 pl-2'>
@@ -155,10 +168,10 @@ function PostPage() {
                             <div
                                 onClick={()=>onDelete(comment)} 
                                 className="flex flex-col justify-center p-2 cursor-pointer 
-                                    text-gray-200 hover:text-gray-700">
+                                    text-gray-400 hover:text-gray-700">
                                 {(session?.user.name === comment.name) ? 
                                     (
-                                        <AdjustmentsHorizontalIcon height={20} width={20} />                                   
+                                        <TrashIcon height={20} width={20} />                                   
                                         
                                     ) : ""
                                 }                               
@@ -175,7 +188,7 @@ function PostPage() {
                             type='submit'
                             className='rounded-full bg-red-500 p-4 w-full text-white font-semibold
                             disabled:bg-gray-200'>
-                                Sign In
+                                Login to comment
                             </button>
                         </div>
     
@@ -191,10 +204,12 @@ function PostPage() {
                         placeholder={
                             session ? 'Write your comments' : 'Please sign in to comment'
                         }
+                        value={inputValue} onChange={handleUserInput}
                         />
             
                         <button
                         disabled={buttonClicked}
+                        onClick={resetInputField}
                         type='submit'
                         className='rounded-full bg-red-500 p-3 text-white font-semibold
                         disabled:bg-gray-200'>
