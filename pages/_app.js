@@ -1,5 +1,5 @@
 import '../styles/globals.css'
-import { SessionProvider,  } from "next-auth/react"
+import { SessionProvider  } from "next-auth/react"
 import Header from '../components/Header'
 import { QueryClientProvider, QueryClient } from 'react-query'
 import Footer from '../components/Footer'
