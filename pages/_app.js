@@ -3,6 +3,8 @@ import { SessionProvider  } from "next-auth/react"
 import Header from '../components/Header'
 import { QueryClientProvider, QueryClient } from 'react-query'
 import Footer from '../components/Footer'
+import AppStore from '../contexts/PostContext'
+
 
 
 const queryClient = new QueryClient()
@@ -12,6 +14,8 @@ function MyApp({ Component, pageProps: { session, ...pageProps }, }) {
 
 
   return(
+    <AppStore>
+
     <QueryClientProvider client={queryClient}>
 
       <SessionProvider session={session}>
@@ -31,6 +35,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps }, }) {
       </SessionProvider>
 
     </QueryClientProvider >
+    </AppStore>
 
   )
   

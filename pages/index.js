@@ -21,14 +21,14 @@ export default function Home({ posts, categories }) {
       <Banner />
 
       <div className='absolute top-36 p-4 sm:top-40 w-full text-center'>
-        {categories.map((cate, index)=> index <= 0 && (    //running only one time.
-          <h1 key={cate._id} className='text-white text-xl sm:text-2xl lg:text-4xl shadow-lg'>
+        {categories?.map((cate, index)=> index <= 0 && (    //running only one time.
+          <h1 key={cate?._id} className='text-white text-xl sm:text-2xl lg:text-4xl shadow-lg'>
             <motion.div
                 initial={{ opacity: 0,  scale: 0.75 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 7, repeat: Infinity, }}
             >
-            "{cate.status.status}"
+            "{cate?.status?.status}"
             </motion.div> 
           </h1> 
         ))}
@@ -45,13 +45,13 @@ export default function Home({ posts, categories }) {
           <div className='grid grid-cols-1 m-12 md:m-24 lg:m-28 sm:grid-cols-2 lg:grid-cols-3 gap-3
           md:gap-6 p-10 md:p-4 border rounded-md font-roboto'>
           {posts.map((post, index) => (
-            <a key={post._id} href={`/posts/${post.slug.current}`} target="_blank" >
+            <a key={post?._id} href={`/posts/${post?.slug.current}`} target="_blank" >
               <div className='border cursor-pointer overflow-hidden lg:m-12 hover:scale-150 transition duration-150'>
 
-                  {post.mainImage ? (
+                  {post?.mainImage ? (
                     <div className='relative p-20'>
                       <Image
-                        src={urlFor(post.mainImage).url()}
+                        src={urlFor(post?.mainImage).url()}
                         layout='fill'
                       />
                     </div>
@@ -67,9 +67,9 @@ export default function Home({ posts, categories }) {
                 <div className='flex justify-between p-3 -mt-2 bg-white'>
                   
                   <div>
-                    <p className='text-lg font-bold'>{post.title}</p>
+                    <p className='text-lg font-bold'>{post?.title}</p>
                     <p className='text-xs'>
-                      {post.description}
+                      {post?.description}
                     </p>
                   </div>
 
@@ -90,12 +90,12 @@ export default function Home({ posts, categories }) {
           </div>
           <div className='grid grid-cols-1 m-12 md:m-24 lg:m-28 sm:grid-cols-2 lg:grid-cols-3 gap-3
              md:gap-6 p-10 md:p-4 border rounded-md'>
-          {categories.map(category => (
+          {categories?.map(category => (
              
-            <a key={category._id} href={`/post/${category.title}`} target="_blank" >
+            <a key={category?._id} href={`/post/${category?.title}`} target="_blank" >
               <div className='border cursor-pointer overflow-hidden hover:scale-110 transition duration-150'>
 
-                {!category.mainImage ? (   
+                {!category?.mainImage ? (   
                   <div className='relative p-10'>
                     <Image
                       src='/category.jpg'                    
@@ -106,12 +106,12 @@ export default function Home({ posts, categories }) {
                   </div>
                 ):(
                   <div className='relative p-10 w-50 h-50'>
-                    <img className='' src={urlFor(category.mainImage).url()} alt="" />
+                    <img className='' src={urlFor(category?.mainImage).url()} alt="" />
                   </div>                  
                 )}
                  
                 <div className='p-2 -mt-2 bg-white'>
-                  <p className='text-sm '>{category.title}</p>
+                  <p className='text-sm '>{category?.title}</p>
                 </div>
 
 
