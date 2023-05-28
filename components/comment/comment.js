@@ -24,7 +24,7 @@ const Comment = ({...comment }) => {
   const childComments = getReplies(comment?._id)
 
   const handleDelete = async (comment) => { 
-    await fetch("/api/createComment", {
+    await fetch("/api/deleteComment", {
       method: "DELETE",
       body: comment._id,
     });    
