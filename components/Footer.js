@@ -4,7 +4,7 @@ import { SocialIcon } from 'react-social-icons'
 
 const Footer = (props) => {
   return (
-    <footer className="flex-row bg-[rgb(36,36,36)] text-center sticky bottom-0 p-10">
+    <footer className="flex-row bg-[rgb(36,36,36)] text-center sticky bottom-0 p-10 mt-80">
         <div className="text-white text-center font-bold text-xl p-2 cursor-pointer">
           <SocialIcon style={{ height: 45, width: 45, }} fgColor="#ffffff" bgColor="rgb(36,36,36)" network="email" url="" target="_blank"/>
            

@@ -122,4 +122,20 @@ export const getGalleryImages = async ()=>{
   return images
 }
 
+export const getDownloads = async ()=>{
+  const query = `*[_type=="Downloads" ]{
+    _id,
+    _createdAt,
+    title,
+    description,
+      file,
+   "filename": file.asset->originalFilename,
+   "fileurl": file.asset->url,
+  }`
+ 
+  const downloads = await sanityClient.fetch(query)
+  return downloads
+}
+
+
 

@@ -82,44 +82,8 @@ export default function Home({ posts, categories }) {
           </div>
 
 
-         {/* DISPLAY CATEGORIES */}
 
-         <div className='flex justify-center space-x-2 pt-20'>
-            <RectangleStackIcon className='h-10 w-10 text-[rgb(36,36,36)]' />
-            <h1 className='text-3xl font-semibold'>Download Categories!</h1>
-          </div>
-          <div className='grid grid-cols-1 m-12 md:m-24 lg:m-28 sm:grid-cols-2 lg:grid-cols-3 gap-3
-             md:gap-6 p-10 md:p-4 border rounded-md'>
-          {categories?.map(category => (
-             
-            <a key={category?._id} href={`/post/${category?.title}`} target="_blank" >
-              <div className='border cursor-pointer overflow-hidden hover:scale-110 transition duration-150'>
-
-                {!category?.mainImage ? (   
-                  <div className='relative p-10'>
-                    <Image
-                      src='/category.jpg'                    
-                      // layout='fill'
-                      width={100}
-                      height={100}
-                    />
-                  </div>
-                ):(
-                  <div className='relative p-10 w-50 h-50'>
-                    <img className='' src={urlFor(category?.mainImage).url()} alt="" />
-                  </div>                  
-                )}
-                 
-                <div className='p-2 -mt-2 bg-white'>
-                  <p className='text-sm '>{category?.title}</p>
-                </div>
-
-
-              </div>
-            </a>
-          ))}
-          </div>
-
+        
       </div>
 
     </div>

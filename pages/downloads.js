@@ -1,14 +1,16 @@
 import React from 'react'
-import { getStaticSide } from '../services';
+import { getDownloads } from '../services';
 import Link from 'next/link';
 import { urlFor } from '../sanity'
 import Head from 'next/head';
 import Image from "next/image";
+import { ArrowDownIcon, EyeDropperIcon, EyeIcon, EyeSlashIcon, } from '@heroicons/react/24/solid'
 
 
 
 
-const downloads = ({ posts }) => {
+
+const downloads = ({ downloads }) => {
   return (
     <>
       <Head>
@@ -16,38 +18,45 @@ const downloads = ({ posts }) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <h1 className='text-4xl p-8 mx-8 mt-24 font-bold text-center'>All Blog Posts</h1>
+      <h1 className='text-4xl p-8 mx-8 mt-24 font-bold text-center'>All Downloads</h1>
 
       <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3
-      md:gap-6 p-5 md:px-1 max-w-6xl mx-auto mb-7'>
-        {posts.map((post) => (
-          <Link key={post._id} href={`/posts/${post.slug.current}`} target="_blank">
-            <a>
-              <div className='border p-1 group cursor-pointer overflow-hidden'>
+      md:gap-6 p-5 md:px-1 max-w-4xl mx-auto mb-7'>
+        {downloads?.map((download) => (
+              <div className='border border-blue-400 p-1 group cursor-pointer overflow-hidden'>
 
-                {/* <img className='h-48 w-full object-cover group-hover:scale-105
-                  transition-transform duration-200 ease-in-out' src={urlFor(post.mainImage)} alt="" /> */}
-
-                  <div className='relative h-48 w-full object-cover group-hover:scale-105
-                  transition-transform duration-200 ease-in-out'>
-                    <Image 
-                      src={urlFor(post.mainImage).url()}
-                      // width={250}
-                      // height={150}
-                      layout="fill"
-                    />
-                  </div>
         
-                <div className="h-16">
-                  <p className='text-lg text-center pt-1 font-bold'>{post.title}</p>
-                  <p className='text-xs px-2'>
-                      {post.description}
-                    </p>
+                <div className="flex-col items-stretch p-2 border-8 border-pink-700">
+
+                  <div className='flex-col text-center'>
+                    <p className='text-lg pt-1 font-bold'>{download?.title}</p>
+                    <p className='text-xs '>{download?.filename}</p>
+                  </div>
+
+                  <div className='flex justify-between'>
+                    <div>
+                      <Link key={download?._id} href={`${download?.fileurl}`} target="_blank">
+                        <a>
+                          <EyeIcon className='h-7 w-7 cursor-pointer active:scale-90 transition duration-150'/>
+                          <p className='text-xs text-center'>Show</p>
+                        </a>
+                      </Link>
+                    </div>
+
+                    <div>
+                      <Link key={download?._id} href={`${download?.fileurl}?dl=`} target="_blank">
+                        <a>
+                          <ArrowDownIcon className='h-7 w-7 cursor-pointer active:scale-90 transition duration-150'/>
+                          <p className='text-xs text-center'>Download</p>
+                        </a>
+                      </Link>
+                    </div>
+
+                  </div>
+
                 </div>
 
               </div>
-            </a>
-          </Link>
         ))}
       </div>
 
@@ -61,16 +70,16 @@ export default downloads
 
 export const getStaticProps = async () => {
 
-  const posts = await getStaticSide()
+  const downloads = await getDownloads()
 
-  if (!posts) {
+  if (!downloads) {
     return {
       notFound: true,
     };
   }
 
   return {
-    props: { posts },
+    props: { downloads },
     // revalidate: 60,
   };
 };
