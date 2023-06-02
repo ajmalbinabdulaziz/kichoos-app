@@ -83,7 +83,7 @@ const downloads = ({ downloads }) => {
 export default downloads
 
 
-export const getStaticProps = async () => {
+export const getServerSideProps = async () => {
 
   const downloads = await getDownloads()
 

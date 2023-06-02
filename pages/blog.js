@@ -59,7 +59,7 @@ const blog = ({ posts }) => {
 export default blog
 
 
-export const getStaticProps = async () => {
+export const getServerSideProps = async () => {
 
   const posts = await getStaticSide()
 
