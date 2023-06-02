@@ -16,7 +16,7 @@ const downloads = ({ downloads }) => {
   return (
     <>
       <Head>
-        <title>Ajmal Codes | Downloads</title>
+        <title>Azhar | Downloads</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 

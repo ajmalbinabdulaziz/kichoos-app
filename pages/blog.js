@@ -12,7 +12,7 @@ const blog = ({ posts }) => {
   return (
     <>
       <Head>
-        <title>Ajmal Codes | Blog</title>
+        <title>Azhar | Blog</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
