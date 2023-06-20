@@ -20,7 +20,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps }, }) {
 
       <SessionProvider session={session}>
 
-      <main className="min-h-screen" >
+      <main className="min-h-screen " >
 
             <Header />
 

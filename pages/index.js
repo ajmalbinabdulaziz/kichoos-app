@@ -11,7 +11,7 @@ import { motion } from "framer-motion"
 export default function Home({ posts, categories }) {
 
   return (
-    <div className='max-w-full mx-auto font-exo'>
+    <div className='max-w-full mx-auto font-exo bg-[rgb(36,36,36)] pb-80'>
       
       <Head>
         <title>Azhar Blog</title>
@@ -40,7 +40,7 @@ export default function Home({ posts, categories }) {
  
           <div className='flex justify-center space-x-2'>
               <BookOpenIcon className='h-10 w-10 text-[rgb(36,36,36)]' />
-              <h1 className='text-3xl font-semibold'>My recent posts!</h1>
+              <h1 className='text-3xl font-semibold text-white'>My recent posts!</h1>
           </div>
           <div className='grid grid-cols-1 m-12 md:m-24 lg:m-28 sm:grid-cols-2 lg:grid-cols-3 gap-3
           md:gap-6 p-10 md:p-4 border rounded-md font-roboto'>

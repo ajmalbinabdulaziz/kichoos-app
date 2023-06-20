@@ -25,7 +25,7 @@ function PostPage() {
         <link rel="icon" href="/favicon.ico" />
       </Head>  
 
-            <div className='bg-gray-50 grid grid-cols-1 lg:grid-cols-3 px-10 py-4'>
+            <div className='bg-gray-50 grid grid-cols-1 lg:grid-cols-3 px-10 py-4 pb-36'>
     
              <article className='flex flex-col col-span-2 lg:pl-4 pr-0 mt-8'>
     
