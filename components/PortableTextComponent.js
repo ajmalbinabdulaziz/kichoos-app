@@ -28,12 +28,12 @@ export const myPortableTextComponents = {
 
 
   marks: {
-    link: ({children, value}) => {
-      const rel = !value.href.startsWith('/') ? 'noreferrer noopener' : undefined
+    link: ({value, children}) => {
+      const target = (value?.href || '').startsWith('http') ? '_blank' : undefined
       return (
-        <Link href={value.href} rel={rel} className="underline decoration-[#F7AB0A] hover:decoration-black" >
+        <a href={value?.href} target={target} rel={target === '_blank' && 'noindex nofollow'}>
           {children}
-        </Link>
+        </a>
       )
     },
     code: ({children}) => {

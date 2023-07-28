@@ -37,6 +37,7 @@ export default function Home({ posts, categories }) {
       <div className='flex-row space-y-4 py-16'>
 
         {/* DISPLAY POSTS */}
+
  
           <div className='flex justify-center space-x-2'>
               <BookOpenIcon className='h-10 w-10 text-[rgb(36,36,36)]' />
